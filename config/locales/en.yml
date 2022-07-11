@@ -30,4 +30,10 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activemodel:
+    attributes:
+      grid:
+        rows: How many rows?
+        columns: How many columns?
+        phase_duration: How long is each phase (in seconds)?
+        phases: How many phases?
