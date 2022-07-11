@@ -103,6 +103,8 @@ RSpec.describe Grid, type: :model do
   end
 
   describe '#next_phase' do
+    before { grid.generate_cells }
+
     it 'adds 1 to phase variable' do
       expect { grid.next_phase }.to change(grid, :phase).by(1)
     end
@@ -117,13 +119,15 @@ RSpec.describe Grid, type: :model do
   describe '#play' do
     subject(:play) { grid.play }
 
+    before { grid.generate_cells }
+
     it 'calls #print' do
       allow(grid).to receive(:print)
       play
       expect(grid).to have_received(:print).twice
     end
 
-    it 'gos onto next phase' do
+    it 'goes onto next phase' do
       expect { play }.to change(grid, :phase).by(1)
     end
   end
