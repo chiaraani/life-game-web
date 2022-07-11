@@ -1,0 +1,18 @@
+require: 
+  - rubocop-rspec
+  - rubocop-rails
+
+AllCops:
+  NewCops: enable
+
+Metrics/BlockLength:
+  Exclude: [Guardfile]
+
+Style/Documentation:
+  Exclude: [config/application.rb]
+
+Layout/ArgumentAlignment: 
+  Enabled: false
+
+Lint/UselessAssignment:
+  Enabled: false
