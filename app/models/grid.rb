@@ -71,5 +71,8 @@ class Grid
     end
 
     @phase = 1
+
+    instance_eval('undef :rows=')
+    instance_eval('undef :columns=')
   end
 end

@@ -46,27 +46,32 @@ RSpec.describe Grid, type: :model do
     include_examples 'validates', 'phases', :integer, 1..100
   end
 
-  describe 'cells' do
+  describe '#generate_cells' do
     rows = 10
     columns = 5
-    subject(:grid) { described_class.new(rows:, columns:) }
+    let(:grid) { described_class.new(rows: rows, columns: columns) }
 
-    before { grid.generate_cells }
+    subject! { grid.generate_cells }
 
-    it "has #{rows} rows" do
+    it "generates #{rows} rows" do
       expect(grid.cells.count).to equal rows
     end
 
-    it "has #{columns} columns" do
+    it "generates #{columns} columns" do
       expect(grid.cells.all? { |row| row.count == columns }).to be true
     end
 
-    it 'has cell class' do
+    it 'generates cell objects' do
       expect(
         grid.cells.all? do |row|
           row.all? { |cell| cell.is_a?(Cell) }
         end
       ).to be true
+    end
+
+    it 'makes rows and columns variables readonly' do
+      expect { grid.rows= 7 }.to raise_error(NoMethodError)
+      expect { grid.columns= 7 }.to raise_error(NoMethodError)
     end
   end
 
