@@ -34,7 +34,7 @@ RSpec.describe Grid, type: :model do
 
       it do
         validate = validate_numericality_of(field)
-        is_expected.to(type == :integer ? validate.only_integer : validate)
+        expect(subject).to(type == :integer ? validate.only_integer : validate)
       end
 
       it { is_expected.to validate_inclusion_of(field).in_range(range) }
@@ -47,11 +47,11 @@ RSpec.describe Grid, type: :model do
   end
 
   describe '#generate_cells' do
+    subject! { grid.generate_cells }
+
     rows = 10
     columns = 5
-    let(:grid) { described_class.new(rows: rows, columns: columns) }
-
-    subject! { grid.generate_cells }
+    let(:grid) { described_class.new(rows:, columns:) }
 
     it "generates #{rows} rows" do
       expect(grid.cells.count).to equal rows
@@ -69,9 +69,12 @@ RSpec.describe Grid, type: :model do
       ).to be true
     end
 
-    it 'makes rows and columns variables readonly' do
-      expect { grid.rows= 7 }.to raise_error(NoMethodError)
-      expect { grid.columns= 7 }.to raise_error(NoMethodError)
+    it 'makes rows variable readonly' do
+      expect { grid.rows = 7 }.to raise_error(NoMethodError)
+    end
+
+    it 'makes columns variable readonly' do
+      expect { grid.columns = 7 }.to raise_error(NoMethodError)
     end
   end
 

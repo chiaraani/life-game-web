@@ -15,9 +15,9 @@ class Grid
   include ActiveModel::Model
 
   validates :rows, :columns, :phases, presence: true, numericality: { only_integer: true }
-  validates_inclusion_of :rows, :columns, in: 1..50
+  validates :rows, :columns, inclusion: { in: 1..50 }
   validates :phase_duration, presence: true, numericality: true, inclusion: { in: 0.01..5 }
-  validates_inclusion_of :phases, in: 1..100
+  validates :phases, inclusion: { in: 1..100 }
 
   attr_accessor :rows, :columns, :phase_duration, :phases
   attr_reader :cells, :phase
@@ -72,7 +72,7 @@ class Grid
 
     @phase = 1
 
-    instance_eval('undef :rows=')
-    instance_eval('undef :columns=')
+    instance_eval { undef :rows= }
+    instance_eval { undef :columns= }
   end
 end
