@@ -8,24 +8,25 @@ class Grid
     attr_accessor :config
   end
 
+  @@attribute_keys = ['rows', 'columns', 'phase_duration', 'phases']
+
   self.config = {
-    default: { rows: 50, columns: 50, phase_duration: 1, phases: 10 }
+    default: { 'rows': 50, 'columns': 50, 'phase_duration': 1, 'phases': 10 },
+    attribute_keys: @@attribute_keys
   }
 
   include ActiveModel::Model
 
-  validates :rows, :columns, :phases, presence: true, numericality: { only_integer: true }
+  validates :rows, :columns, :phases, numericality: { only_integer: true }
   validates :rows, :columns, inclusion: { in: 1..50 }
-  validates :phase_duration, presence: true, numericality: true, inclusion: { in: 0.01..5 }
+  validates :phase_duration, numericality: true, inclusion: { in: 0.01..5 }
   validates :phases, inclusion: { in: 1..100 }
 
-  attr_accessor :rows, :columns, :phase_duration, :phases
+  attr_accessor *@@attribute_keys
   attr_reader :cells, :phase
 
   def initialize(**args)
-    args.merge(self.class.config[:default], args).each_pair do |key, value|
-      instance_variable_set("@#{key}", value)
-    end
+    assign_attributes(self.class.config[:default].merge(args.to_hash))
   end
 
   def cell_lives
@@ -41,8 +42,6 @@ class Grid
   end
 
   def print
-    system 'clear'
-
     cells.each { |row| Rails.logger.debug row.map(&:character).join }
     Rails.logger.debug { "Phase #{phase}" }
   end
@@ -64,6 +63,8 @@ class Grid
   end
 
   def generate_cells
+    attributes_to_f
+
     @cells = Array.new(rows) do |row|
       Array.new(columns) do |column|
         Cell.new(self, [row, column])
@@ -71,8 +72,14 @@ class Grid
     end
 
     @phase = 1
+  end
 
-    instance_eval { undef :rows= }
-    instance_eval { undef :columns= }
+  private
+  
+  def attributes_to_f
+    @@attribute_keys.each do |key|
+      value = send(key).to_f
+      instance_variable_set("@#{key}", value)
+    end
   end
 end

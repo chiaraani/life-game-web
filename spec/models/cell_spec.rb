@@ -3,7 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Cell, type: :model do
-  subject(:cell) { Grid.new.cells[0][1] }
+  subject(:cell) { grid.cells[0][1] }
+
+  let(:grid) { Grid.new(rows: 3, columns: 3) }
+
+  before { grid.generate_cells }
 
   it 'is live or dead' do
     expect(cell.live).to be(true).or be(false)
@@ -22,8 +26,8 @@ RSpec.describe Cell, type: :model do
     context 'with live = true' do
       let(:live) { true }
 
-      it 'returns bright indian red ⦿' do
-        expect(cell.character).to eq Rainbow('⦿ ').indianred.bright
+      it 'returns ⦿' do
+        expect(cell.character).to eq '⦿ '
       end
     end
 

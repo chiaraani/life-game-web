@@ -28,10 +28,13 @@ RSpec.describe Grid, type: :model do
     ]
   end
 
+  it 'accepts params' do
+    grid = described_class.new(rows: '2')
+    expect(grid.rows).to eq '2'
+  end
+
   describe 'validations' do
     shared_examples 'validates' do |field, type, range|
-      it { is_expected.to validate_presence_of field }
-
       it do
         validate = validate_numericality_of(field)
         expect(subject).to(type == :integer ? validate.only_integer : validate)
@@ -67,14 +70,6 @@ RSpec.describe Grid, type: :model do
           row.all? { |cell| cell.is_a?(Cell) }
         end
       ).to be true
-    end
-
-    it 'makes rows variable readonly' do
-      expect { grid.rows = 7 }.to raise_error(NoMethodError)
-    end
-
-    it 'makes columns variable readonly' do
-      expect { grid.columns = 7 }.to raise_error(NoMethodError)
     end
   end
 
