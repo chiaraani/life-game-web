@@ -13,7 +13,7 @@ class GridsController < ApplicationController
     if @grid.valid?
       play
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -24,6 +24,6 @@ class GridsController < ApplicationController
   end
 
   def play
-    render :play
+    render :play, status: :created
   end
 end

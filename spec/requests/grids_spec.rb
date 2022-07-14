@@ -18,7 +18,8 @@ RSpec.describe 'Grids', type: :request do
         { grid: { rows: '3', columns: '3', phase_duration: '0.01', phases: '2' } }
       end
 
-      it('renders play view') { expect(response).to render_template(:play) }
+      it { expect(response).to have_http_status(:created) }
+      it { expect(response).to render_template(:play) }
     end
 
     context 'with wrong parameters' do
@@ -26,7 +27,8 @@ RSpec.describe 'Grids', type: :request do
         { grid: { rows: '1000', phase_duration: '0.01' } }
       end
 
-      it('renders new view') { expect(response).to render_template(:new) }
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+      it { expect(response).to render_template(:new) }
 
       it 'informs Number of rows is out of range' do
         expect(response.body).to include 'Number of rows must be in 1..50'
