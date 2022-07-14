@@ -13,9 +13,9 @@ class Grid
   attribute :phases, :integer
 
   validates(*attribute_names, presence: true)
-  validates :rows, :columns, numericality: { only_integer: true, in: 1..50 }
+  validates :rows, :columns, numericality: { in: 1..50 }
   validates :phase_duration, numericality: { in: 0.01..5 }
-  validates :phases, numericality: { only_integer: true, in: 1..100 }
+  validates :phases, numericality: { in: 1..100 }
 
   attr_reader :cells, :phase
 

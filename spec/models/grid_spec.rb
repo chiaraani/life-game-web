@@ -32,22 +32,20 @@ RSpec.describe Grid, type: :model do
   end
 
   describe 'validations' do
-     shared_examples 'validates' do |field, type, range|
+     shared_examples 'validates' do |field, range|
       it { is_expected.to validate_presence_of(field) } 
       it do                                                                                    
         validate = validate_numericality_of(field)
           .is_greater_than_or_equal_to(range.min)
           .is_less_than_or_equal_to(range.max)
           .with_message("must be in #{range}")              
-  
-        is_expected.to type == :integer ? validate.only_integer : validate
       end
     end
 
-    include_examples 'validates', 'rows', :integer, 1..50
-    include_examples 'validates', 'columns', :integer, 1..50
-    include_examples 'validates', 'phase_duration', :float, 0.01..5
-    include_examples 'validates', 'phases', :integer, 1..100
+    include_examples 'validates', 'rows', 1..50
+    include_examples 'validates', 'columns', 1..50
+    include_examples 'validates', 'phase_duration', 0.01..5
+    include_examples 'validates', 'phases', 1..100
   end
 
   describe '#generate_cells' do
