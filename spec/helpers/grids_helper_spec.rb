@@ -23,7 +23,7 @@ RSpec.describe GridsHelper, type: :helper do
   describe '#step' do
     shared_examples 'step' do |attribute, type, step|
       it "returns #{type} step" do
-        expect(helper.step(Grid, attribute)).to eq({ step: step })
+        expect(helper.step(Grid, attribute)).to eq({ step: })
       end
     end
 

@@ -18,15 +18,27 @@ RSpec.describe 'Grids', type: :request do
         { grid: { rows: '3', columns: '3', phase_duration: '0.01', phases: '2' } }
       end
 
-      it('redirects to play') { assert_redirected_to(:play, params:) }
+      it('renders play view') { expect(response).to render_template(:play) }
     end
 
     context 'with wrong parameters' do
       let(:params) do
-        { grid: { rows: 'Hello', columns: '3', phase_duration: '0.01' } }
+        { grid: { rows: '1000', phase_duration: '0.01' } }
       end
 
       it('renders new view') { expect(response).to render_template(:new) }
+
+      it 'informs Number of rows is out of range' do
+        expect(response.body).to include 'Number of rows must be in 1..50'
+      end
+
+      it 'informs Number of columns must be a number' do
+        expect(response.body).to include 'Number of columns is not a number'
+      end
+
+      it 'informs Number of phases must be filled' do
+        expect(response.body).to include CGI::escapeHTML('Number of phases can\'t be blank')
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ RSpec.describe 'grids/new', type: :view do
   let(:form) { "form[action='#{root_path}'][method=post] " }
 
   def assert_label(attribute)
-    assert_select "#{form}label[for=grid_#{attribute}]"
+    assert_select "#{form}label[for=grid_#{attribute}]", text: t('questions')[attribute]
   end
 
   def assert_field(attribute, range, type)
@@ -23,7 +23,13 @@ RSpec.describe 'grids/new', type: :view do
     ].join
   end
 
-  before { render }
+  before do
+    grid = Grid.new
+    assign(:grid, grid)
+    grid.errors.add :rows, :invalid
+
+    render
+  end
 
   shared_examples 'input' do |attribute, range, type = :integer|
     it "renders #{attribute} label and field" do
@@ -39,5 +45,9 @@ RSpec.describe 'grids/new', type: :view do
 
   it 'renders a submit button' do
     assert_select "#{form}input[type=submit]"
+  end
+
+  it 'renders errors' do
+    expect(rendered).to match(/Number of rows is invalid/)
   end
 end

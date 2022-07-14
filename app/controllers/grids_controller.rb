@@ -2,13 +2,16 @@
 
 # For creating a grid and playing it
 class GridsController < ApplicationController
-  def new; end
+  def new
+    @grid = Grid.new
+    @grid.set_default!
+  end
 
   def create
     @grid = Grid.new(**grid_params)
 
     if @grid.valid?
-      redirect_to :play, params: grid_params
+      play
     else
       render :new
     end
@@ -17,6 +20,10 @@ class GridsController < ApplicationController
   private
 
   def grid_params
-    params.require(:grid).permit(*Grid.config[:attribute_keys])
+    params.require(:grid).permit(*Grid.attribute_names)
+  end
+
+  def play
+    render :play
   end
 end

@@ -1,9 +1,21 @@
 <h1>New population</h1>
-<%= form_with model: Grid.new, url: root_path do |f| %>
-  <% [:rows, :columns, :phase_duration, :phases].each do |attribute| %>
+
+<%= form_with model: @grid, url: root_path do |f| %>
+  <% if @grid.errors.any? %>
+    <ul>
+      <% @grid.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% Grid.attribute_names.each do |attribute| %>
     <div>
-      <%= f.label attribute %>
-      <%= f.number_field attribute, required: true, **step(Grid, attribute), **min_and_max(Grid, attribute) %>
+      <%= f.label attribute, t('questions')[attribute.to_sym] %>
+      <%= f.number_field attribute,
+        required: true, 
+        **step(Grid, attribute), 
+        **min_and_max(Grid, attribute) %>
     </div>
   <% end %>
 

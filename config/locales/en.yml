@@ -33,7 +33,12 @@ en:
   activemodel:
     attributes:
       grid:
-        rows: How many rows?
-        columns: How many columns?
-        phase_duration: How long is each phase (in seconds)?
-        phases: How many phases?
+        rows: Number of rows
+        columns: Number of columns
+        phase_duration: Phase duration
+        phases: Number of phases
+  questions:
+    rows: How many rows?
+    columns: How many columns?
+    phase_duration: How long is each phase (in seconds)?
+    phases: How many phases?

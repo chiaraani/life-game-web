@@ -7,7 +7,10 @@ RSpec.describe Cell, type: :model do
 
   let(:grid) { Grid.new(rows: 3, columns: 3) }
 
-  before { grid.generate_cells }
+  before do
+    grid.set_default!
+    grid.generate_cells
+  end
 
   it 'is live or dead' do
     expect(cell.live).to be(true).or be(false)
@@ -21,7 +24,7 @@ RSpec.describe Cell, type: :model do
   it('has column coordinate') { expect(cell.column).to eq 1 }
 
   describe '#character' do
-    subject(:cell) { described_class.new(Grid.new, [1, 1], live) }
+    subject(:cell) { described_class.new(grid, [1, 1], live) }
 
     context 'with live = true' do
       let(:live) { true }

@@ -4,30 +4,20 @@ require_relative 'cell'
 
 # Grid of cells that die, live and reproduce
 class Grid
-  class << self
-    attr_accessor :config
-  end
-
-  @@attribute_keys = ['rows', 'columns', 'phase_duration', 'phases']
-
-  self.config = {
-    default: { 'rows': 50, 'columns': 50, 'phase_duration': 1, 'phases': 10 },
-    attribute_keys: @@attribute_keys
-  }
-
   include ActiveModel::Model
+  include ActiveModel::Attributes
 
-  validates :rows, :columns, :phases, numericality: { only_integer: true }
-  validates :rows, :columns, inclusion: { in: 1..50 }
-  validates :phase_duration, numericality: true, inclusion: { in: 0.01..5 }
-  validates :phases, inclusion: { in: 1..100 }
+  attribute :rows, :integer
+  attribute :columns, :integer
+  attribute :phase_duration, :float
+  attribute :phases, :integer
 
-  attr_accessor *@@attribute_keys
+  validates(*attribute_names, presence: true)
+  validates :rows, :columns, numericality: { only_integer: true, in: 1..50 }
+  validates :phase_duration, numericality: { in: 0.01..5 }
+  validates :phases, numericality: { only_integer: true, in: 1..100 }
+
   attr_reader :cells, :phase
-
-  def initialize(**args)
-    assign_attributes(self.class.config[:default].merge(args.to_hash))
-  end
 
   def cell_lives
     cells.map { |row| row.map(&:live) }
@@ -63,8 +53,6 @@ class Grid
   end
 
   def generate_cells
-    attributes_to_f
-
     @cells = Array.new(rows) do |row|
       Array.new(columns) do |column|
         Cell.new(self, [row, column])
@@ -74,12 +62,9 @@ class Grid
     @phase = 1
   end
 
-  private
-  
-  def attributes_to_f
-    @@attribute_keys.each do |key|
-      value = send(key).to_f
-      instance_variable_set("@#{key}", value)
+  def set_default!
+    attributes = self. attributes.merge Rails.configuration.grid_default do |_key, value, default|
+      value.nil? ? default : value
     end
   end
 end
