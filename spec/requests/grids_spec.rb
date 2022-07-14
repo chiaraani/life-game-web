@@ -24,7 +24,7 @@ RSpec.describe 'Grids', type: :request do
 
     context 'with wrong parameters' do
       let(:params) do
-        { grid: { rows: '1000', columns: '', phases: ''} }
+        { grid: { rows: '1000', columns: '', phases: '' } }
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
@@ -39,7 +39,7 @@ RSpec.describe 'Grids', type: :request do
       end
 
       it 'informs Number of phases must be filled' do
-        expect(response.body).to include CGI::escapeHTML('Number of phases can\'t be blank')
+        expect(response.body).to include CGI.escapeHTML('Number of phases can\'t be blank')
       end
     end
   end

@@ -26,19 +26,21 @@ RSpec.describe Grid, type: :model do
 
   describe 'type cast' do
     let(:grid) { described_class.new(rows: '2') }
+
     it 'parses string valid arguments to integer or float' do
       expect(grid.rows).to eq 2
     end
   end
 
   describe 'validations' do
-     shared_examples 'validates' do |field, range|
-      it { is_expected.to validate_presence_of(field) } 
-      it do                                                                                    
+    shared_examples 'validates' do |field, range|
+      it { is_expected.to validate_presence_of(field) }
+
+      it do
         validate = validate_numericality_of(field)
-          .is_greater_than_or_equal_to(range.min)
-          .is_less_than_or_equal_to(range.max)
-          .with_message("must be in #{range}")              
+                   .is_greater_than_or_equal_to(range.min)
+                   .is_less_than_or_equal_to(range.max)
+                   .with_message("must be in #{range}")
       end
     end
 
@@ -83,50 +85,48 @@ RSpec.describe Grid, type: :model do
     end
   end
 
-=begin
-  describe '#print' do
-    it 'prints cells' do
-      cell_characters = grid.cells.map do |row|
-        "#{row.map(&:character).join}\n"
-      end.join
-
-      expect { grid.print }.to output(a_string_starting_with(cell_characters)).to_stdout
-    end
-
-    it 'prints current phase' do
-      phase_description = "Phase #{grid.phase}\n"
-      expect { grid.print }.to output(a_string_ending_with(phase_description)).to_stdout
-    end
-  end
-
-  describe '#next_phase' do
-    before { grid.generate_cells }
-
-    it 'adds 1 to phase variable' do
-      expect { grid.next_phase }.to change(grid, :phase).by(1)
-    end
-
-    it 'changes cells to next phase' do
-      grid.cell_lives = phases[0]
-      grid.next_phase
-      expect(grid.cell_lives).to(eq(phases[1]))
-    end
-  end
-
-  describe '#play' do
-    subject(:play) { grid.play }
-
-    before { grid.generate_cells }
-
-    it 'calls #print' do
-      allow(grid).to receive(:print)
-      play
-      expect(grid).to have_received(:print).twice
-    end
-
-    it 'goes onto next phase' do
-      expect { play }.to change(grid, :phase).by(1)
-    end
-  end
-=end
+  #   describe '#print' do
+  #     it 'prints cells' do
+  #       cell_characters = grid.cells.map do |row|
+  #         "#{row.map(&:character).join}\n"
+  #       end.join
+  #
+  #       expect { grid.print }.to output(a_string_starting_with(cell_characters)).to_stdout
+  #     end
+  #
+  #     it 'prints current phase' do
+  #       phase_description = "Phase #{grid.phase}\n"
+  #       expect { grid.print }.to output(a_string_ending_with(phase_description)).to_stdout
+  #     end
+  #   end
+  #
+  #   describe '#next_phase' do
+  #     before { grid.generate_cells }
+  #
+  #     it 'adds 1 to phase variable' do
+  #       expect { grid.next_phase }.to change(grid, :phase).by(1)
+  #     end
+  #
+  #     it 'changes cells to next phase' do
+  #       grid.cell_lives = phases[0]
+  #       grid.next_phase
+  #       expect(grid.cell_lives).to(eq(phases[1]))
+  #     end
+  #   end
+  #
+  #   describe '#play' do
+  #     subject(:play) { grid.play }
+  #
+  #     before { grid.generate_cells }
+  #
+  #     it 'calls #print' do
+  #       allow(grid).to receive(:print)
+  #       play
+  #       expect(grid).to have_received(:print).twice
+  #     end
+  #
+  #     it 'goes onto next phase' do
+  #       expect { play }.to change(grid, :phase).by(1)
+  #     end
+  #   end
 end
