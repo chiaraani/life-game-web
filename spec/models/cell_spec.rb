@@ -7,10 +7,7 @@ RSpec.describe Cell, type: :model do
 
   let(:grid) { Grid.new(rows: 3, columns: 3) }
 
-  before do
-    grid.set_default!
-    grid.generate_cells
-  end
+  before { grid.generate_cells }
 
   it 'is live or dead' do
     expect(cell.live).to be(true).or be(false)

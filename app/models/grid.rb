@@ -19,6 +19,12 @@ class Grid
 
   attr_reader :cells, :phase
 
+  def initialize(**args)
+    super Rails.configuration.grid_default.merge args.to_h do |_key, value, default|
+      value.nil? ? default : value
+    end
+  end
+
   def cell_lives
     cells.map { |row| row.map(&:live) }
   end
@@ -60,11 +66,5 @@ class Grid
     end
 
     @phase = 1
-  end
-
-  def set_default!
-    attributes = self. attributes.merge Rails.configuration.grid_default do |_key, value, default|
-      value.nil? ? default : value
-    end
   end
 end

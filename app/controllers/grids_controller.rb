@@ -4,7 +4,6 @@
 class GridsController < ApplicationController
   def new
     @grid = Grid.new
-    @grid.set_default!
   end
 
   def create

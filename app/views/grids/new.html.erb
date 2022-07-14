@@ -2,7 +2,7 @@
 
 <%= form_with model: @grid, url: root_path do |f| %>
   <% if @grid.errors.any? %>
-    <ul>
+    <ul class="errors">
       <% @grid.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>

@@ -24,8 +24,6 @@ RSpec.describe Grid, type: :model do
     ]
   end
 
-  before { grid.set_default! }
-
   describe 'type cast' do
     let(:grid) { described_class.new(rows: '2') }
     it 'parses string valid arguments to integer or float' do

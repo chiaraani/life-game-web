@@ -24,7 +24,7 @@ RSpec.describe 'Grids', type: :request do
 
     context 'with wrong parameters' do
       let(:params) do
-        { grid: { rows: '1000', phase_duration: '0.01' } }
+        { grid: { rows: '1000', columns: '', phases: ''} }
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
