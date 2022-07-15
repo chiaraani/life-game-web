@@ -1,9 +1,9 @@
 <h1>New population</h1>
 
-<%= form_with model: @grid, url: root_path do |f| %>
-  <% if @grid.errors.any? %>
+<%= form_with model: @grid_data, url: root_path do |f| %>
+  <% if @grid_data.errors.any? %>
     <ul class="errors">
-      <% @grid.errors.full_messages.each do |message| %>
+      <% @grid_data.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
@@ -14,8 +14,8 @@
       <%= f.label attribute, t('questions')[attribute.to_sym] %>
       <%= f.number_field attribute,
         required: true, 
-        **step(Grid, attribute), 
-        **min_and_max(Grid, attribute) %>
+        **step(attribute), 
+        **min_and_max(attribute) %>
     </div>
   <% end %>
 

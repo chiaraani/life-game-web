@@ -3,7 +3,7 @@
 # It makes possible to print to HTML from a ruby process
 class PrintChannel < ApplicationCable::Channel
   def subscribed
-    # stream_from "some_channel"
+    stream_from 'print_channel'
   end
 
   def unsubscribed

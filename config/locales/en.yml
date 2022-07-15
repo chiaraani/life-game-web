@@ -32,7 +32,7 @@
 en:
   activemodel:
     attributes:
-      grid:
+      grid_data:
         rows: Number of rows
         columns: Number of columns
         phase_duration: Phase duration

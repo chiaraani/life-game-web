@@ -12,17 +12,11 @@ class Grid
   attribute :phase_duration, :float
   attribute :phases, :integer
 
-  validates(*attribute_names, presence: true)
-  validates :rows, :columns, numericality: { in: 1..50 }
-  validates :phase_duration, numericality: { in: 0.01..5 }
-  validates :phases, numericality: { in: 1..100 }
-
   attr_reader :cells, :phase
 
   def initialize(**args)
-    super Rails.configuration.grid_default.merge args.to_h do |_key, value, default|
-      value.nil? ? default : value
-    end
+    super(**args)
+    @phase = 0
   end
 
   def cell_lives
@@ -38,8 +32,12 @@ class Grid
   end
 
   def print
-    cells.each { |row| Rails.logger.debug row.map(&:character).join }
-    Rails.logger.debug { "Phase #{phase}" }
+    data = {
+      cells: cells.map { |row| row.map(&:character).join }.join("\n"),
+      phase: @phase
+    }
+
+    ActionCable.server.broadcast('print_channel', data)
   end
 
   def next_phase
@@ -49,12 +47,13 @@ class Grid
 
   def play
     generate_cells
-    print
 
-    2.upto(@phases) do
-      sleep(@phase_duration)
-      next_phase
+    loop do
       print
+      break if phase >= phases
+
+      sleep(phase_duration)
+      next_phase
     end
   end
 

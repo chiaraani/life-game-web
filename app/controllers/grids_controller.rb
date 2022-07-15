@@ -3,13 +3,13 @@
 # For creating a grid and playing it
 class GridsController < ApplicationController
   def new
-    @grid = Grid.new
+    @grid_data = GridData.default
   end
 
   def create
-    @grid = Grid.new(**grid_params)
+    @grid_data = GridData.new(**grid_params)
 
-    if @grid.valid?
+    if @grid_data.valid?
       play
     else
       render :new, status: :unprocessable_entity

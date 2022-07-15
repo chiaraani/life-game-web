@@ -6,7 +6,7 @@ RSpec.describe 'grids/new', type: :view do
   let(:form) { "form[action='#{root_path}'][method=post] " }
 
   def assert_label(attribute)
-    assert_select "#{form}label[for=grid_#{attribute}]", text: t('questions')[attribute]
+    assert_select "#{form}label[for=grid_data_#{attribute}]", text: t('questions')[attribute]
   end
 
   def assert_field(attribute, range, type)
@@ -15,7 +15,7 @@ RSpec.describe 'grids/new', type: :view do
     assert_select [
       form,
       'input',
-      "[name='grid[#{attribute}]']",
+      "[name='grid_data[#{attribute}]']",
       '[required]',
       step,
       "[min='#{range.min}']",
@@ -24,8 +24,8 @@ RSpec.describe 'grids/new', type: :view do
   end
 
   before do
-    grid = Grid.new
-    assign(:grid, grid)
+    grid = GridData.new
+    assign(:grid_data, grid)
     grid.errors.add :rows, :invalid
 
     render

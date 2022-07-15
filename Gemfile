@@ -91,3 +91,6 @@ group :test, :development do
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
 end
+
+# Active Job Adapter
+# gem 'resque'
