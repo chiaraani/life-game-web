@@ -10,14 +10,22 @@ RSpec.describe PlayJob, type: :job do
     expect(described_class).to have_been_performed
   end
 
-  it 'calls Grid.play' do
-    grid = instance_double(Grid)
-    allow(grid).to receive(:play)
-    allow(Grid).to receive(:new).and_return(grid)
+  describe 'grid' do
+    let(:grid) { instance_double(Grid) }
 
-    described_class.perform_later(arg: 1)
+    before do
+      allow(grid).to receive(:play)
+      allow(Grid).to receive(:new).and_return(grid)
+    end
 
-    expect(Grid).to have_received(:new).with(arg: 1)
-    expect(grid).to have_received(:play)
+    it 'is created' do
+      described_class.perform_later(arg: 1)
+      expect(Grid).to have_received(:new).with(arg: 1)
+    end
+
+    it '\'s play method is called' do
+      described_class.perform_later(arg: 1)
+      expect(grid).to have_received(:play)
+    end
   end
 end
