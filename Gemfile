@@ -93,4 +93,4 @@ group :test, :development do
 end
 
 # Active Job Adapter
-# gem 'resque'
+gem 'resque'
