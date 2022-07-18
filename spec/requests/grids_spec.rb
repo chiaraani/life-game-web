@@ -15,7 +15,7 @@ RSpec.describe 'Grids', type: :request do
 
     context 'with correct parameters' do
       let(:params) do
-        { grid: { rows: '3', columns: '3', phase_duration: '0.01', phases: '2' } }
+        { grid_data: { rows: '3', columns: '3', phase_duration: '0.01', phases: '2' } }
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -24,7 +24,7 @@ RSpec.describe 'Grids', type: :request do
 
     context 'with wrong parameters' do
       let(:params) do
-        { grid: { rows: '1000', columns: 'ajkd', phases: '' } }
+        { grid_data: { rows: '1000', columns: 'ajkd', phases: '' } }
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }

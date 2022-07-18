@@ -19,10 +19,11 @@ class GridsController < ApplicationController
   private
 
   def grid_params
-    params.require(:grid).permit(*Grid.attribute_names)
+    params.require(:grid_data).permit(*Grid.attribute_names)
   end
 
   def play
     render :play, status: :created
+    Grid.new(**@grid_data.attributes).play
   end
 end
