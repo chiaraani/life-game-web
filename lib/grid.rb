@@ -8,7 +8,7 @@ class Grid
     attr_accessor :config
   end
 
-  self.config = { default: { rows: 50, columns: 50, phase_duration: 1, phases: 10 } }
+  self.config = { default: Rails.configuration.grid_default }
 
   attr_reader :cells, :phase, :rows, :columns
 

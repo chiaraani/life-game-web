@@ -71,5 +71,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Default values for Grid attributes
-  config.grid_default = { 'rows' => 50, 'columns' => 50, 'phase_duration' => 1, 'phases' => 10 }
+  config.grid_default = { rows: 50, columns: 50, phase_duration: 1, phases: 10 }
 end

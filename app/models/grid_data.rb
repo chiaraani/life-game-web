@@ -5,7 +5,7 @@ class GridData
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  Grid.attribute_names.each { |name| attribute name }
+  %i[rows columns phases phase_duration].each { |name| attribute name }
 
   validates(*attribute_names, presence: true)
   validates :rows, :columns, numericality: { only_integer: true, in: 1..50 }

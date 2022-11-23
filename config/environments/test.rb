@@ -61,5 +61,5 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Default values for Grid attributes
-  config.grid_default = { 'rows' => 5, 'columns' => 5, 'phase_duration' => 0.01, 'phases' => 2 }
+  config.grid_default = { rows: 5, columns: 5, phase_duration: 0.01, phases: 2 }
 end

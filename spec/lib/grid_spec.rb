@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Grid do
-  described_class.config = {
-    default: { rows: 5, columns: 5, phase_duration: 0.01, phases: 2 }
-  }
-
   let(:grid) { described_class.new }
 
   let(:phases) do
@@ -34,7 +30,7 @@ RSpec.describe Grid do
     subject(:grid) { described_class.new(rows:, columns:) }
 
     it "has #{rows} rows" do
-      expect(grid.cells.count).to equal rows
+      expect(grid.cells.count).to eq rows
     end
 
     it "has #{columns} columns" do
@@ -56,6 +52,7 @@ RSpec.describe Grid do
       expect(grid.cell_lives).to eq phases[0]
     end
   end
+
   #   describe '#print' do
   #     it 'prints cells' do
   #       cell_characters = grid.cells.map do |row|

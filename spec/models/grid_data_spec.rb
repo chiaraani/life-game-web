@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe GridData, type: :model do
-  it 'has same attributes as Grid model' do
-    expect(described_class.attribute_names).to eq Grid.attribute_names
-  end
-
   describe 'validations' do
     shared_examples 'validates' do |field, type, range|
       it { is_expected.to validate_presence_of(field) }

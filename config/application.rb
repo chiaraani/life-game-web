@@ -22,6 +22,6 @@ module LifeGameWeb
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Autoload files in lib
-    config.autoload_paths << "#{Rails.root}/lib"
+    config.autoload_paths << Rails.root.join('lib')
   end
 end
