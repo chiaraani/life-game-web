@@ -23,7 +23,7 @@ RSpec.describe PlayJob, type: :job do
       expect(Grid).to have_received(:new).with(arg: 1)
     end
 
-    it '\'s play method is called' do
+    it 's play method is called' do
       described_class.perform_later(arg: 1)
       expect(grid).to have_received(:play)
     end

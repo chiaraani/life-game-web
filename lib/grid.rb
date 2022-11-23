@@ -4,19 +4,19 @@ require_relative 'cell'
 
 # Grid of cells that die, live and reproduce
 class Grid
-  include ActiveModel::Model
-  include ActiveModel::Attributes
+  class << self
+    attr_accessor :config
+  end
 
-  attribute :rows, :integer
-  attribute :columns, :integer
-  attribute :phase_duration, :float
-  attribute :phases, :integer
+  self.config = { default: { rows: 50, columns: 50, phase_duration: 1, phases: 10 } }
 
-  attr_reader :cells, :phase
+  attr_reader :cells, :phase, :rows, :columns
 
   def initialize(**args)
-    super(**args)
-    @phase = 0
+    args.merge(self.class.config[:default], args).each_pair do |key, value|
+      instance_variable_set("@#{key}", value)
+    end
+    generate_cells
   end
 
   def cell_lives
@@ -32,12 +32,10 @@ class Grid
   end
 
   def print
-    data = {
-      cells: cells.map { |row| row.map(&:character).join }.join("\n"),
-      phase: @phase
-    }
+    system 'clear'
 
-    ActionCable.server.broadcast('print_channel', data)
+    cells.each { |row| Rails.logger.debug row.map(&:character).join }
+    Rails.logger.debug { "Phase #{phase}" }
   end
 
   def next_phase
@@ -46,16 +44,15 @@ class Grid
   end
 
   def play
-    generate_cells
-
-    loop do
-      print
-      break if phase >= phases
-
-      sleep(phase_duration)
+    print
+    2.upto(@phases) do
+      sleep(@phase_duration)
       next_phase
+      print
     end
   end
+
+  private
 
   def generate_cells
     @cells = Array.new(rows) do |row|

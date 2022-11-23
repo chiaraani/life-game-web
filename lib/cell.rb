@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rainbow'
+
 # A cell lives, dies, or is born, and interacts with other neighbour cells.
 class Cell
   attr_accessor :live
@@ -14,7 +16,7 @@ class Cell
   end
 
   def character
-    live ? '⦿ ' : '  '
+    live ? Rainbow('⦿ ').indianred.bright : '  '
   end
 
   def neighbours_coordinates

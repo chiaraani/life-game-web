@@ -20,5 +20,8 @@ module LifeGameWeb
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Autoload files in lib
+    config.autoload_paths << "#{Rails.root}/lib"
   end
 end
