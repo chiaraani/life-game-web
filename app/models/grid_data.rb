@@ -15,4 +15,8 @@ class GridData
   def self.default
     new(**Rails.configuration.grid_default)
   end
+
+  def to_grid
+    Grid.new(**attributes.transform_keys(&:to_sym))
+  end
 end

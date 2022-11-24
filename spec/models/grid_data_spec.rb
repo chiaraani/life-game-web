@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe GridData, type: :model do
+  it 'has correct attributes' do
+    expect(described_class.attribute_names).to eq %w[rows columns phases phase_duration]
+  end
+
   describe 'validations' do
     shared_examples 'validates' do |field, type, range|
       it { is_expected.to validate_presence_of(field) }
@@ -26,11 +30,30 @@ RSpec.describe GridData, type: :model do
     include_examples 'validates', 'phases', :integer, 1..100
   end
 
-  describe '#default' do
+  describe '#self.default' do
     subject(:default) { described_class.default }
 
     it 'returns grid data with default values' do
-      expect(default.attributes).to eq Rails.configuration.grid_default
+      expect(default.attributes)
+        .to eq Rails.configuration.grid_default.transform_keys(&:to_s)
+    end
+  end
+
+  describe '#to_grid' do
+    subject(:grid) { grid_data.to_grid }
+
+    let(:grid_data) { described_class.default }
+
+    let(:grid_attributes) do
+      described_class.attribute_names.index_with do |key|
+        grid.instance_variable_get("@#{key}")
+      end
+    end
+
+    it('returns a Grid') { is_expected.to be_a Grid }
+
+    it 'transfers data to Grid' do
+      expect(grid_attributes).to eq grid_data.attributes
     end
   end
 end
