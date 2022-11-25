@@ -16,24 +16,7 @@ class GridData
     new(**Rails.configuration.grid_default)
   end
 
-  def self.min_and_max(attribute)
-    range = numericality_options(attribute)[:in]
-    { min: range.min, max: range.max }
-  end
-
-  def self.type_of(attribute)
-    numericality_options(attribute)[:only_integer] ? :integer : :float
-  end
-
   def to_grid
     Grid.new(**attributes.transform_keys(&:to_sym))
-  end
-
-  def self.numericality_options(attribute)
-    validator = validators_on(attribute).find do |v|
-      v.is_a? ActiveModel::Validations::NumericalityValidator
-    end
-
-    validator.instance_variable_get('@options')
   end
 end

@@ -39,23 +39,6 @@ RSpec.describe GridData, type: :model do
     end
   end
 
-  describe '#self.min_and_max' do
-    it 'returns min and max of attribute' do
-      expect(described_class.min_and_max(:rows)).to eq({ min: 1, max: 50 })
-    end
-  end
-
-  describe '#self.type_of' do
-    shared_examples 'type' do |attribute, type|
-      it 'returns type of attribute' do
-        expect(described_class.type_of(attribute)).to eq(type)
-      end
-    end
-
-    include_examples 'type', :rows, :integer
-    include_examples 'type', :phase_duration, :float
-  end
-
   describe '#to_grid' do
     subject(:grid) { grid_data.to_grid }
 
