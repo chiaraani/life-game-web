@@ -26,8 +26,8 @@ RSpec.describe GridData, type: :model do
       end
     end
 
-    include_examples 'validates', 'rows', :integer, 1..50
-    include_examples 'validates', 'columns', :integer, 1..50
+    include_examples 'validates', 'rows', :integer, 1..100
+    include_examples 'validates', 'columns', :integer, 1..100
     include_examples 'validates', 'phase_duration', :float, 0.01..5
     include_examples 'validates', 'phases', :integer, 1..100
 
@@ -69,7 +69,7 @@ RSpec.describe GridData, type: :model do
 
   describe '#self.range_of' do
     it 'returns range of rows' do
-      expect(described_class.range_of(:rows)).to eq 1..50
+      expect(described_class.range_of(:rows)).to eq 1..100
     end
   end
 

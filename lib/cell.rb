@@ -15,10 +15,6 @@ class Cell
     neighbours_coordinates
   end
 
-  def character
-    live ? Rainbow('⦿ ').indianred.bright : '  '
-  end
-
   def neighbours_coordinates
     @neighbours_coordinates ||=
       possible_neighbours.select do |neighbour|

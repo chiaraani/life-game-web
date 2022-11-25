@@ -22,3 +22,20 @@
 .errors {
   color: red;
  }
+
+.cells {
+  font-size: calc( 65vmin / max(var(--rows), var(--columns)) );
+  border: 2px solid grey;
+  background-color: #eee;
+  
+  display: grid;
+  width: 90vmin;
+  height: 90vmin;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+}
+
+.cell::before { 
+  color:  #e52929; 
+  content: '⬤';
+}

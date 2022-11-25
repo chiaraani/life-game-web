@@ -16,26 +16,6 @@ RSpec.describe Cell do
   it('has row coordinate') { expect(cell.row).to eq 0 }
   it('has column coordinate') { expect(cell.column).to eq 1 }
 
-  describe '#character' do
-    subject(:cell) { described_class.new(Grid.new, [1, 1], live) }
-
-    context 'with live = true' do
-      let(:live) { true }
-
-      it 'returns bright indian red ⦿' do
-        expect(cell.character).to eq Rainbow('⦿ ').indianred.bright
-      end
-    end
-
-    context 'with live = false' do
-      let(:live) { false }
-
-      it 'returns a space' do
-        expect(cell.character).to equal '  '
-      end
-    end
-  end
-
   describe '#neighbours_coordinates' do
     rows = 10
     columns = 10
