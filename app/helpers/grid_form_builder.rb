@@ -5,30 +5,14 @@ class GridFormBuilder < ActionView::Helpers::FormBuilder
     super attribute,
       required: true,
       step: step_of(attribute),
-      min: range(attribute).min,
-      max: range(attribute).max,
+      min: @object.class.range_of(attribute).min,
+      max: @object.class.range_of(attribute).max,
       **options
   end
 
   private
 
   def step_of(attribute)
-    type_of(attribute) == :integer ? 1 : 'any'
-  end
-
-  def range(attribute)
-    range = numericality_options(attribute)[:in]
-  end
-
-  def type_of(attribute)
-    numericality_options(attribute)[:only_integer] ? :integer : :float
-  end
-
-  def numericality_options(attribute)
-    validator = @object.class.validators_on(attribute).find do |v|
-      v.is_a? ActiveModel::Validations::NumericalityValidator
-    end
-
-    validator.instance_variable_get('@options')
+    @object.class.type_of(attribute) == :integer ? 1 : 'any'
   end
 end
