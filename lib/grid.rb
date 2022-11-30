@@ -32,10 +32,12 @@ class Grid
   end
 
   def print
-    system 'clear'
-
-    cells.each { |row| Rails.logger.debug row.map(&:character).join }
-    Rails.logger.debug { "Phase #{phase}" }
+    Turbo::StreamsChannel.broadcast_update_to(
+      'play',
+      target: 'grid',
+      partial: 'grids/grid',
+      locals: { grid: self }
+    )
   end
 
   def next_phase

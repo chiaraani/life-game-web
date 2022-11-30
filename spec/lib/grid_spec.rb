@@ -24,6 +24,19 @@ RSpec.describe Grid do
     ]
   end
 
+  let :allow_to_broadcast_grid do
+    allow(Turbo::StreamsChannel).to receive(:broadcast_update_to)
+  end
+
+  let :expect_to_have_broadcasted_grid do
+    expect(Turbo::StreamsChannel).to have_received(:broadcast_update_to).with(
+      'play',
+      target: 'grid',
+      partial: 'grids/grid',
+      locals: { grid: }
+    )
+  end
+
   describe 'cells' do
     rows = 10
     columns = 5
@@ -53,44 +66,44 @@ RSpec.describe Grid do
     end
   end
 
-  #   describe '#print' do
-  #     it 'prints cells' do
-  #       cell_characters = grid.cells.map do |row|
-  #         "#{row.map(&:character).join}\n"
-  #       end.join
-  #
-  #       expect { grid.print }.to output(a_string_starting_with(cell_characters)).to_stdout
-  #     end
-  #
-  #     it 'prints current phase' do
-  #       phase_description = "Phase #{grid.phase}\n"
-  #       expect { grid.print }.to output(a_string_ending_with(phase_description)).to_stdout
-  #     end
-  #   end
-  #
-  #   describe '#next_phase' do
-  #     it 'adds 1 to phase variable' do
-  #       expect { grid.next_phase }.to change(grid, :phase).by(1)
-  #     end
-  #
-  #     it 'changes cells to next phase' do
-  #       grid.cell_lives = phases[0]
-  #       grid.next_phase
-  #       expect(grid.cell_lives).to(eq(phases[1]))
-  #     end
-  #   end
-  #
-  #   describe '#play' do
-  #     subject(:play) { grid.play }
-  #
-  #     it 'calls #print' do
-  #       allow(grid).to receive(:print)
-  #       play
-  #       expect(grid).to have_received(:print).twice
-  #     end
-  #
-  #     it 'gos onto next phase' do
-  #       expect { play }.to change(grid, :phase).by(1)
-  #     end
-  #   end
+  describe '#print' do
+    it 'broadcasts grid with Turbo' do
+      allow_to_broadcast_grid
+      grid.print
+      expect_to_have_broadcasted_grid
+    end
+  end
+
+  describe '#next_phase' do
+    it 'adds 1 to phase variable' do
+      expect { grid.next_phase }.to change(grid, :phase).by(1)
+    end
+
+    it 'changes cells to next phase' do
+      grid.cell_lives = phases[0]
+      grid.next_phase
+      expect(grid.cell_lives).to(eq(phases[1]))
+    end
+  end
+
+  describe '#play' do
+    subject(:play) { grid.play }
+
+    before { allow(grid).to receive(:sleep) }
+
+    it 'calls #print' do
+      allow(grid).to receive(:print)
+      play
+      expect(grid).to have_received(:print).twice
+    end
+
+    it 'gos onto next phase' do
+      expect { play }.to change(grid, :phase).by(1)
+    end
+
+    it 'sleeps phase duration' do
+      play
+      expect(grid).to have_received(:sleep).with(0.01).once
+    end
+  end
 end
