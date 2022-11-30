@@ -23,8 +23,7 @@ class GridsController < ApplicationController
   end
 
   def play
-    @grid = @grid_data.to_grid
     render :play, status: :created
-    # PlayJob.perform_later(**@grid_data.attributes)
+    PlayJob.perform_later(**@grid_data.attributes)
   end
 end

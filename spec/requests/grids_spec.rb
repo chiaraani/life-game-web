@@ -11,7 +11,7 @@ RSpec.describe 'Grids', type: :request do
   end
 
   describe 'POST /' do
-    subject! { post('/', params:) }
+    subject!(:create) { post('/', params:) }
 
     context 'with correct parameters' do
       let(:params) do
@@ -19,8 +19,19 @@ RSpec.describe 'Grids', type: :request do
                        phases: '2' } }
       end
 
+      let(:job_params) do
+        { 'rows' => 3,
+          'columns' => 3,
+          'phase_duration' => 0.01,
+          'phases' => 2 }
+      end
+
       it { expect(response).to have_http_status(:created) }
       it { expect(response).to render_template(:play) }
+
+      it 'performs Play Job' do
+        expect(PlayJob).to have_been_enqueued.with(job_params)
+      end
     end
 
     context 'with wrong parameters' do
@@ -32,7 +43,7 @@ RSpec.describe 'Grids', type: :request do
       it { expect(response).to render_template(:new) }
 
       it 'informs Number of rows is out of range' do
-        expect(response.body).to include 'Number of rows must be in 1..50'
+        expect(response.body).to include 'Number of rows must be in 1..100'
       end
 
       it 'informs Number of columns must be a number' do
