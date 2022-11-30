@@ -10,7 +10,7 @@ RSpec.describe GridsHelper, type: :helper do
     let(:cell_lives) { [[true, true], [false, true]] }
     let(:live) { helper.tag.span(class: 'cell') }
     let(:empty) { helper.tag.span }
-    let(:result) { [live, live, empty, live].join }
+    let(:result) { safe_join [live, live, empty, live] }
 
     before { grid.cell_lives = cell_lives }
 
