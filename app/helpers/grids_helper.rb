@@ -3,7 +3,7 @@
 # Helpers for grid views
 module GridsHelper
   def print_cells(grid)
-    grid.cells.map { |row| print_row row }.join.html_safe
+    grid.cells.map { |row| print_row row }.join
   end
 
   private

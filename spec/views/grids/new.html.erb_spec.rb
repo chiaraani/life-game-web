@@ -6,7 +6,8 @@ RSpec.describe 'grids/new', type: :view do
   let(:form) { "form[action='#{root_path}'][method=post] " }
 
   def assert_label(attribute)
-    assert_select "#{form}label[for=grid_data_#{attribute}]", text: t('questions')[attribute]
+    assert_select "#{form}label[for=grid_data_#{attribute}]",
+text: t('questions')[attribute]
   end
 
   def assert_field(attribute, range, type)

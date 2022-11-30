@@ -19,11 +19,12 @@ class GridsController < ApplicationController
   private
 
   def grid_params
-    params.require(:grid_data).permit(*Grid.attribute_names)
+    params.require(:grid_data).permit(*GridData.attribute_names)
   end
 
   def play
+    @grid = @grid_data.to_grid
     render :play, status: :created
-    PlayJob.perform_later(**@grid_data.attributes)
+    # PlayJob.perform_later(**@grid_data.attributes)
   end
 end

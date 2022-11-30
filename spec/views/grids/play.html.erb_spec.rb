@@ -9,5 +9,8 @@ RSpec.describe 'grids/play', type: :view do
   end
 
   it('renders div#grid') { assert_select 'div#grid' }
-  it('renders p#phase with "Phase 1"') { assert_select 'p#phase', text: 'Phase 1' }
+
+  it('renders p#phase with "Phase 1"') {
+    assert_select 'p#phase', text: 'Phase 1'
+  }
 end

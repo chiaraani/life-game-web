@@ -1,2 +1,2 @@
-<div id="grid"></div>
-<p id="phase">Phase 1</p>
+<%= turbo_stream_from :play %>
+<%= render partial: 'grid', locals: { grid: @grid } %>

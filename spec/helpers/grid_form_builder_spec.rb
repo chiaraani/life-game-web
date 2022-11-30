@@ -4,7 +4,9 @@ require 'rails_helper'
 
 RSpec.describe GridFormBuilder, type: :helper do
   def builder(&)
-    helper.form_with(model: GridData.new, url: root_path, builder: GridFormBuilder, &)
+    helper.form_with(
+      model: GridData.new, url: root_path, builder: GridFormBuilder, &
+    )
   end
 
   describe '#number_field' do
@@ -17,7 +19,7 @@ RSpec.describe GridFormBuilder, type: :helper do
 
     it('is required') { is_expected_to_have_attribute(:rows, 'required') }
     it('has min') { is_expected_to_have_attribute(:rows, 'min', 1) }
-    it('has max') { is_expected_to_have_attribute(:rows, 'max', 50) }
+    it('has max') { is_expected_to_have_attribute(:rows, 'max', 100) }
 
     shared_examples 'step' do |attribute, step|
       it "has step=#{step}" do

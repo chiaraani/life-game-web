@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Build HTML validations from Active Model Validations for Grid
 class GridFormBuilder < ActionView::Helpers::FormBuilder
   def number_field(attribute, **options)
     super attribute,

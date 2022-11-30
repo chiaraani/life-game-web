@@ -15,7 +15,8 @@ RSpec.describe 'Grids', type: :request do
 
     context 'with correct parameters' do
       let(:params) do
-        { grid_data: { rows: '3', columns: '3', phase_duration: '0.01', phases: '2' } }
+        { grid_data: { rows: '3', columns: '3', phase_duration: '0.01',
+                       phases: '2' } }
       end
 
       it { expect(response).to have_http_status(:created) }
