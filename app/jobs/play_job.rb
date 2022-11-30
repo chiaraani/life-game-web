@@ -4,7 +4,7 @@
 class PlayJob < ApplicationJob
   queue_as :default
 
-  def perform(**args)
-    Grid.new(**args).play
+  def perform(**grid_attributes)
+    GridData.new(grid_attributes).to_grid.play
   end
 end
