@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+https://user-images.githubusercontent.com/13300465/207031607-75d03052-96a8-4331-a0d1-d20c17559b4f.mp4
 
-Things you may want to cover:
+* Ruby version: 3.1.2
 
-* Ruby version
+* System dependencies: Ruby on Rails 7.0.3
 
-* System dependencies
+* No database
 
-* Configuration
+* To start server run `rails server`
 
-* Database creation
+* Then, visit on http://localhost:3000/
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* How to run the test suite: `rspec`
