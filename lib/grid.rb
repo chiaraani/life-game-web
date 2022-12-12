@@ -46,9 +46,11 @@ class Grid
   end
 
   def play
+    sleep(0.1)
+
     loop do
       print
-      break if @phase >= @phases
+      break if phase >= @phases
 
       sleep @phase_duration
       next_phase
