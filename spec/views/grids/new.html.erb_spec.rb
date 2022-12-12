@@ -39,8 +39,8 @@ text: t('questions')[attribute]
     end
   end
 
-  include_examples 'input', :rows, 1..50
-  include_examples 'input', :columns, 1..50
+  include_examples 'input', :rows, 1..100
+  include_examples 'input', :columns, 1..100
   include_examples 'input', :phase_duration, 0.01..5, :float
   include_examples 'input', :phases, 1..100
 

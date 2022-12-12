@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rainbow'
-
 # A cell lives, dies, or is born, and interacts with other neighbour cells.
 class Cell
   attr_accessor :live
