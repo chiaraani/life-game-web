@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'grids/new', type: :view do
-  let(:form) { "form[action='#{root_path}'][method=post] " }
+  let(:form) { "form[action='#{root_path}'][method=post]" }
 
   def assert_label(attribute)
-    assert_select "#{form}label[for=grid_data_#{attribute}]",
+    assert_select "#{form} label[for=grid_data_#{attribute}]",
 text: t('questions')[attribute]
   end
 
@@ -14,7 +14,7 @@ text: t('questions')[attribute]
     step = type == :integer ? '[step=1]' : '[step=any]'
 
     assert_select [
-      form,
+      form, ' ',
       'input',
       "[name='grid_data[#{attribute}]']",
       '[required]',
@@ -32,6 +32,8 @@ text: t('questions')[attribute]
     render
   end
 
+  it('renders title') { assert_select 'h1', text: 'New population of cells in a grid' }
+
   shared_examples 'input' do |attribute, range, type = :integer|
     it "renders #{attribute} label and field" do
       assert_label(attribute)
@@ -45,7 +47,7 @@ text: t('questions')[attribute]
   include_examples 'input', :phases, 1..100
 
   it 'renders a submit button' do
-    assert_select "#{form}input[type=submit]"
+    assert_select "#{form} input[type=submit][value=?]", 'Create grid'
   end
 
   it 'renders errors' do

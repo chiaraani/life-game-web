@@ -12,7 +12,7 @@ RSpec.describe 'Grids', type: :system do
       visit root_path
 
       yield
-      click_on 'Create Grid'
+      click_on 'Create grid'
     end
 
     def fill_in_rows_and_columns(rows, columns)
@@ -30,6 +30,11 @@ RSpec.describe 'Grids', type: :system do
     end
 
     let(:phase_paragraph) { find('p', text: /Phase/) }
+
+    it 'renders title' do
+      visit root_path
+      assert_selector 'h1', text: 'New population of cells in a grid'
+    end
 
     it 'renders 4 rows and 3 columns' do
       creating_grid { fill_in_rows_and_columns(4, 3) }
