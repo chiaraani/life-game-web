@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Grids', type: :system do
+  before do
+    ActiveJob::Base.queue_adapter = :async
+  end
+
   describe 'Playing grid' do
     def creating_grid
       visit root_path
