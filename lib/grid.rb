@@ -46,7 +46,7 @@ class Grid
   end
 
   def play(job_id)
-    sleep 0.5
+    sleep 1
 
     loop do
       broadcast_to :play, job_id
