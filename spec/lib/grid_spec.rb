@@ -30,7 +30,7 @@ RSpec.describe Grid do
 
   let :expect_to_have_broadcasted_grid do
     expect(Turbo::StreamsChannel).to have_received(:broadcast_update_to).with(
-      'play',
+      streamable,
       target: 'grid',
       partial: 'grids/grid',
       locals: { grid: }
@@ -66,10 +66,12 @@ RSpec.describe Grid do
     end
   end
 
-  describe '#print' do
+  describe '#broadcast_to' do
+    let(:streamable) { [:play, 'my_job'] }
+
     it 'broadcasts grid with Turbo' do
       allow_to_broadcast_grid
-      grid.print
+      grid.broadcast_to(*streamable)
       expect_to_have_broadcasted_grid
     end
   end
@@ -87,17 +89,20 @@ RSpec.describe Grid do
   end
 
   describe '#play' do
-    subject(:play) { grid.play }
+    subject(:play) { grid.play(job_id) }
+
+    let(:job_id) { 'job3' }
+    let(:streamable) { [:play, job_id] }
 
     before { allow(grid).to receive(:sleep) }
 
     it 'calls #print' do
-      allow(grid).to receive(:print)
+      allow(grid).to receive(:broadcast_to)
       play
-      expect(grid).to have_received(:print).twice
+      expect(grid).to have_received(:broadcast_to).with(*streamable).twice
     end
 
-    it 'gos onto next phase' do
+    it 'goes onto next phase' do
       expect { play }.to change(grid, :phase).by(1)
     end
 

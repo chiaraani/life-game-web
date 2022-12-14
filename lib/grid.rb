@@ -31,9 +31,9 @@ class Grid
     end
   end
 
-  def print
+  def broadcast_to(*streamable)
     Turbo::StreamsChannel.broadcast_update_to(
-      'play',
+      streamable,
       target: 'grid',
       partial: 'grids/grid',
       locals: { grid: self }
@@ -45,11 +45,11 @@ class Grid
     @phase += 1
   end
 
-  def play
+  def play(job_id)
     sleep 0.5
 
     loop do
-      print
+      broadcast_to :play, job_id
       break if phase >= @phases
 
       sleep @phase_duration
