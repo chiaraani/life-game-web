@@ -92,4 +92,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Default values for Grid attributes
+  config.grid_default = { rows: 50, columns: 50, phase_duration: 1, phases: 10 }
 end
