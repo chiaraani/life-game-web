@@ -46,7 +46,7 @@ class Grid
   end
 
   def play
-    sleep 0.8
+    sleep 0.6
 
     loop do
       print
