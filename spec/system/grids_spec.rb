@@ -49,7 +49,7 @@ RSpec.describe 'Grids', type: :system do
     end
 
     it 'renders text "finished" when phases are finished' do
-      creating_grid(phases: 3)
+      creating_grid(phases: 4)
       assert_no_text('Finished!')
       sleep(0.2)
       assert_text('Finished!')
@@ -64,7 +64,7 @@ RSpec.describe 'Grids', type: :system do
 
     it 'can play several at the same time' do
       creating_grid(phases: 4, phase_duration: 0.1)
-      sleep(0.1)
+      sleep(0.08)
 
       expect { creating_grid(phase_duration: 0.1) }
         .to change(phase_paragraph, :text).from('Phase 2').to('Phase 1')

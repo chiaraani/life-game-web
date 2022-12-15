@@ -34,14 +34,11 @@
   --cell-size: calc( calc( 100vmin - 100px ) / max(var(--rows), var(--columns)) );
   grid-template-rows: repeat(var(--rows), var(--cell-size));
   grid-template-columns: repeat(var(--columns), var(--cell-size));
-
-  font-size: calc( var(--cell-size));
-  color: #ed0061;
 }
 
-.cell::before { 
-  color:  #d64889; 
-  content: '⬤';
+.cell { 
+  background-color: #d64889;
+  border-radius: 100%;
 }
 
 img.loading {
