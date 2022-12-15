@@ -3,7 +3,7 @@
   <% unless Rails.env.test? %>
     <p><strong>Phase 0</strong></p>
     <div class="cells">
-      <%= image_tag "/assets/loading.gif", alt: 'loading', class: 'loading' %>
+      <%= image_tag asset_url('loading.gif'), alt: 'loading', class: 'loading' %>
     </div>
   <% end %>
 </div>
