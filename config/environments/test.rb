@@ -62,4 +62,7 @@ Rails.application.configure do
 
   # Default values for Grid attributes
   config.grid_default = { rows: 5, columns: 5, phase_duration: 0.01, phases: 2 }
+
+  # Grid loading time
+  config.grid_loading_time = 0.05.seconds
 end

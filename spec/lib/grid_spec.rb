@@ -106,6 +106,14 @@ RSpec.describe Grid do
       expect { play }.to change(grid, :phase).by(1)
     end
 
+    it 'sleeps loading time' do
+      play
+      expect(grid).to(
+        have_received(:sleep)
+        .with(Rails.configuration.grid_loading_time).once
+      )
+    end
+
     it 'sleeps phase duration' do
       play
       expect(grid).to have_received(:sleep).with(0.01).once

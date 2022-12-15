@@ -46,7 +46,7 @@ class Grid
   end
 
   def play(job_id)
-    sleep 1
+    sleep Rails.configuration.grid_loading_time
 
     loop do
       broadcast_to :play, job_id
