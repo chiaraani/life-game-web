@@ -14,6 +14,8 @@ RSpec.describe 'Grids', type: :system do
       options[:long] = options.delete :phase_duration if options[:phase_duration].present?
       options.each { |field, value| fill_in field, with: value }
       click_on 'Create grid'
+
+      sleep(Rails.configuration.grid_loading_time)
     end
 
     def expect_phase_to(change_something)
@@ -48,7 +50,7 @@ RSpec.describe 'Grids', type: :system do
 
     it 'can play several at the same time' do
       creating_grid(phases: 4, phase_duration: 0.1)
-      sleep(Rails.configuration.grid_loading_time + 0.1)
+      sleep(0.1)
 
       expect { creating_grid(phase_duration: 0.1) }
         .to change(phase_paragraph, :text).from('Phase 2').to('Phase 1')

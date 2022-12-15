@@ -37,6 +37,8 @@ RSpec.describe Grid do
     )
   end
 
+  let(:streamable) { [:play, 'my_job'] }
+
   describe 'cells' do
     rows = 10
     columns = 5
@@ -67,8 +69,6 @@ RSpec.describe Grid do
   end
 
   describe '#broadcast_to' do
-    let(:streamable) { [:play, 'my_job'] }
-
     it 'broadcasts grid with Turbo' do
       allow_to_broadcast_grid
       grid.broadcast_to(*streamable)
@@ -89,10 +89,7 @@ RSpec.describe Grid do
   end
 
   describe '#play' do
-    subject(:play) { grid.play(job_id) }
-
-    let(:job_id) { 'job3' }
-    let(:streamable) { [:play, job_id] }
+    subject(:play) { grid.play('my_job') }
 
     before { allow(grid).to receive(:sleep) }
 
