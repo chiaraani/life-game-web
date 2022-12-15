@@ -2,3 +2,7 @@
 <div class="cells" style="--rows: <%= grid.rows %>; --columns: <%= grid.columns %>">
   <%= print_cells grid %>
 </div>
+
+<% if grid.phase == grid.phases %>
+  <p class="finished">Finished! <%= link_to 'Create another grid', root_path %></p>
+<% end %>

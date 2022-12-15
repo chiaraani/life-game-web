@@ -10,7 +10,7 @@ class Grid
 
   self.config = { default: Rails.configuration.grid_default }
 
-  attr_reader :cells, :phase, :rows, :columns
+  attr_reader :cells, :phase, :rows, :columns, :phases
 
   def initialize(**args)
     args.merge(self.class.config[:default], args).each_pair do |key, value|

@@ -18,8 +18,8 @@ RSpec.describe 'Grids', type: :system do
       sleep(Rails.configuration.grid_loading_time)
     end
 
-    def expect_phase_to(change_something)
-      creating_grid(phase_duration: 0.1)
+    def expect_phase_to(change_something, phases: 2)
+      creating_grid(phase_duration: 0.1 * (phases - 1), phases:)
       expect { sleep(0.1) }.to(change_something)
     end
 
@@ -46,6 +46,20 @@ RSpec.describe 'Grids', type: :system do
 
     it 'switches cells to next phase' do
       expect_phase_to(change { find('.cells')['innerHTML'] })
+    end
+
+    it 'renders text "finished" when phases are finished' do
+      creating_grid(phases: 3)
+      assert_no_text('Finished!')
+      sleep(0.2)
+      assert_text('Finished!')
+    end
+
+    it 'renders link to create new grid' do
+      creating_grid
+      sleep(0.1)
+      click_on 'Create another grid'
+      assert_selector 'h1', text: 'New population of cells in a grid'
     end
 
     it 'can play several at the same time' do
