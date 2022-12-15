@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'grids/new', type: :view do
-  let(:form) { "form[action='#{root_path}'][method=post]" }
+  let(:form) { "form[action='#{play_path}'][method=post]" }
 
   def assert_label(attribute)
     assert_select "#{form} label[for=grid_data_#{attribute}]",

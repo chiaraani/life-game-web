@@ -7,7 +7,7 @@ RSpec.describe GridsController, type: :routing do
     expect(get('/')).to route_to('grids#new')
   end
 
-  it 'routes / to grid#create' do
-    expect(post('/')).to route_to('grids#create')
+  it 'routes /play to grid#create' do
+    expect(post('/play')).to route_to('grids#create')
   end
 end

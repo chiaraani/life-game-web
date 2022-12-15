@@ -10,8 +10,8 @@ RSpec.describe 'Grids', type: :request do
     end
   end
 
-  describe 'POST /' do
-    subject!(:create) { post('/', params:) }
+  describe 'POST /play' do
+    subject!(:create) { post('/play', params:) }
 
     context 'with correct parameters' do
       let(:params) do
