@@ -6,7 +6,7 @@ class GridData
   include ActiveModel::Attributes
   include ActiveModel::Validations::Callbacks
 
-  %i[rows columns phases phase_duration].each { |name| attribute name }
+  %i[game_id rows columns phases phase_duration].each { |name| attribute name }
 
   validates(*attribute_names, presence: true)
   validates :rows, :columns, numericality: { only_integer: true, in: 1..100 }
@@ -16,21 +16,26 @@ class GridData
   after_validation :transform_values, if: ->(model) { model.errors.empty? }
 
   def self.default
-    new(**Rails.configuration.grid_default)
+    new('game_id' => SecureRandom.uuid, **Rails.configuration.grid_default)
   end
 
   def self.type_of(attribute)
-    numericality_options(attribute)[:only_integer] ? :integer : :float
+    if numericality_validator(attribute).nil?
+      :string
+    elsif numericality_validator(attribute).options[:only_integer]
+      :integer
+    else
+      :float
+    end
   end
 
   def self.range_of(attribute)
-    numericality_options(attribute)[:in]
+    numericality_validator(attribute).options[:in]
   end
 
   def transform_values
     attributes.each do |key, value|
-      methods = { integer: :to_i, float: :to_f }
-      send("#{key}=", value.send(methods[self.class.type_of(key)]))
+      send("#{key}=", value.send("to_#{self.class.type_of(key)[0]}"))
     end
   end
 
@@ -38,13 +43,10 @@ class GridData
     Grid.new(**attributes.transform_keys(&:to_sym))
   end
 
-  def self.numericality_options(attribute)
-    validator = validators_on(attribute).find do |v|
+  def self.numericality_validator(attribute)
+    validators_on(attribute).find do |v|
       v.is_a? ActiveModel::Validations::NumericalityValidator
     end
-
-    validator.instance_variable_get('@options')
   end
-
-  private_class_method :numericality_options
+  private_class_method :numericality_validator
 end

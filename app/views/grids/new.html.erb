@@ -1,20 +1,26 @@
-<h1>New population of cells in a grid</h1>
+<%= turbo_stream_from :play, @grid_data.game_id %>
 
-<%= form_with model: @grid_data, url: play_path, builder: GridFormBuilder do |f| %>
-  <% if @grid_data.errors.any? %>
-    <ul class="errors">
-      <% @grid_data.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+<div id="grid">
+  <h1>New population of cells in a grid</h1>
+
+  <%= form_with model: @grid_data, url: play_path, builder: GridFormBuilder do |f| %>
+    <% if @grid_data.errors.any? %>
+      <ul class="errors">
+        <% @grid_data.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= f.hidden_field :game_id %>
+
+    <% %i[rows columns phases phase_duration].each do |attribute| %>
+      <div>
+        <%= f.label attribute, t('questions')[attribute.to_sym] %>
+        <%= f.number_field attribute %>
+      </div>
+    <% end %>
+
+    <%= f.submit 'Create grid' %>
   <% end %>
-
-  <% GridData.attribute_names.each do |attribute| %>
-    <div>
-      <%= f.label attribute, t('questions')[attribute.to_sym] %>
-      <%= f.number_field attribute %>
-    </div>
-  <% end %>
-
-  <%= f.submit 'Create grid' %>
-<% end %>
+</div>

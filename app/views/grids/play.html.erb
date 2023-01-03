@@ -1,9 +1,0 @@
-<%= turbo_stream_from :play, @job_id %>
-<div id="grid">
-  <% unless Rails.env.test? %>
-    <p><strong>Phase 0</strong></p>
-    <div class="cells">
-      <%= image_tag asset_url('loading.gif'), alt: 'loading', class: 'loading' %>
-    </div>
-  <% end %>
-</div>

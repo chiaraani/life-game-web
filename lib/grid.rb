@@ -45,11 +45,9 @@ class Grid
     @phase += 1
   end
 
-  def play(job_id)
-    sleep Rails.configuration.grid_loading_time
-
+  def play
     loop do
-      broadcast_to :play, job_id
+      broadcast_to :play, @game_id
       break if phase >= @phases
 
       sleep @phase_duration

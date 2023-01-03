@@ -10,7 +10,7 @@ class GridsController < ApplicationController
     @grid_data = GridData.new(**grid_params)
 
     if @grid_data.valid?
-      play
+      PlayJob.perform_later(**@grid_data.attributes)
     else
       render :new, status: :unprocessable_entity
     end
@@ -20,10 +20,5 @@ class GridsController < ApplicationController
 
   def grid_params
     params.require(:grid_data).permit(*GridData.attribute_names)
-  end
-
-  def play
-    @job_id = PlayJob.perform_later(**@grid_data.attributes).job_id
-    render :play, status: :created
   end
 end

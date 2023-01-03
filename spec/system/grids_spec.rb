@@ -3,9 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Grids', type: :system do
-  before do
-    ActiveJob::Base.queue_adapter = :async
-  end
+  before { ActiveJob::Base.queue_adapter = :async }
 
   describe 'Playing grid' do
     def creating_grid(**options)
@@ -14,8 +12,6 @@ RSpec.describe 'Grids', type: :system do
       options[:long] = options.delete :phase_duration if options[:phase_duration].present?
       options.each { |field, value| fill_in field, with: value }
       click_on 'Create grid'
-
-      sleep(Rails.configuration.grid_loading_time)
     end
 
     def expect_phase_to(change_something, phases: 2)
@@ -32,7 +28,7 @@ RSpec.describe 'Grids', type: :system do
 
     it 'renders 4 rows and 3 columns' do
       creating_grid(rows: 4, columns: 3)
-      expect(find('.cells')['style']).to eq '--rows: 4; --columns: 3;'
+      expect(page).to have_selector(".cells[style='--rows: 4; --columns: 3']")
     end
 
     it 'renders 4 x 3 cells' do
@@ -64,7 +60,7 @@ RSpec.describe 'Grids', type: :system do
 
     it 'can play several at the same time' do
       creating_grid(phases: 4, phase_duration: 0.1)
-      sleep(0.08)
+      sleep(0.1)
 
       expect { creating_grid(phase_duration: 0.1) }
         .to change(phase_paragraph, :text).from('Phase 2').to('Phase 1')
