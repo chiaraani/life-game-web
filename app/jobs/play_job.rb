@@ -6,8 +6,8 @@ class PlayJob < ApplicationJob
 
   def perform(game_id, grid_attributes)
     @grid = GridData.new(grid_attributes).to_grid
-    
-    @grid.play { broadcast_to(game_id) } 
+
+    @grid.play { broadcast_to(game_id) }
   end
 
   def broadcast_to(game_id)
