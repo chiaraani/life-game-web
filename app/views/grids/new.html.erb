@@ -1,4 +1,4 @@
-<%= turbo_stream_from :play, @grid_data.game_id %>
+<%= turbo_stream_from :play, @game_id %>
 
 <div id="grid">
   <h1>New population of cells in a grid</h1>
@@ -12,7 +12,7 @@
       </ul>
     <% end %>
 
-    <%= f.hidden_field :game_id %>
+    <%= hidden_field_tag :game_id, @game_id %>
 
     <% %i[rows columns phases phase_duration].each do |attribute| %>
       <div>

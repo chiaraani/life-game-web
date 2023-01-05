@@ -4,16 +4,10 @@ require_relative 'cell'
 
 # Grid of cells that die, live and reproduce
 class Grid
-  class << self
-    attr_accessor :config
-  end
-
-  self.config = { default: Rails.configuration.grid_default }
-
   attr_reader :cells, :phase, :rows, :columns, :phases
 
-  def initialize(**args)
-    args.merge(self.class.config[:default], args).each_pair do |key, value|
+  def initialize(args)
+    args.each_pair do |key, value|
       instance_variable_set("@#{key}", value)
     end
     generate_cells
@@ -23,31 +17,9 @@ class Grid
     cells.map { |row| row.map(&:live) }
   end
 
-  def cell_lives=(next_lives)
-    next_lives.each_with_index do |row, cell_row|
-      row.each_with_index do |life, cell_column|
-        @cells[cell_row][cell_column].live = life
-      end
-    end
-  end
-
-  def broadcast_to(*streamable)
-    Turbo::StreamsChannel.broadcast_update_to(
-      streamable,
-      target: 'grid',
-      partial: 'grids/grid',
-      locals: { grid: self }
-    )
-  end
-
-  def next_phase
-    self.cell_lives = cells.map { |row| row.map(&:next?) }
-    @phase += 1
-  end
-
   def play
     loop do
-      broadcast_to :play, @game_id
+      yield
       break if phase >= @phases
 
       sleep @phase_duration
@@ -65,5 +37,18 @@ class Grid
     end
 
     @phase = 1
+  end
+
+  def cell_lives=(next_lives)
+    next_lives.each_with_index do |row, cell_row|
+      row.each_with_index do |life, cell_column|
+        @cells[cell_row][cell_column].live = life
+      end
+    end
+  end
+
+  def next_phase
+    self.cell_lives = cells.map { |row| row.map(&:next?) }
+    @phase += 1
   end
 end

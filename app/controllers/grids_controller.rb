@@ -3,14 +3,15 @@
 # For creating a grid and playing it
 class GridsController < ApplicationController
   def new
-    @grid_data = GridData.default
+    @game_id = SecureRandom.uuid
+    @grid_data = GridData.new(**Rails.configuration.grid_default)
   end
 
   def create
     @grid_data = GridData.new(**grid_params)
 
     if @grid_data.valid?
-      PlayJob.perform_later(**@grid_data.attributes)
+      PlayJob.perform_later(params['game_id'], grid_params)
     else
       render :new, status: :unprocessable_entity
     end
