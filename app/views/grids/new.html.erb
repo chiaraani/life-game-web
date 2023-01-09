@@ -17,7 +17,7 @@
     <% %i[rows columns phases phase_duration].each do |attribute| %>
       <div>
         <%= f.label attribute, t('questions')[attribute.to_sym] %>
-        <%= f.number_field attribute %>
+        <%= f.number_field_with_validations attribute %>
       </div>
     <% end %>
 

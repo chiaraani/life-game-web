@@ -5,15 +5,15 @@ require 'rails_helper'
 RSpec.describe 'grids/_grid', type: :view do
   subject(:render_grid) { render partial: 'grids/grid', locals: { grid: } }
 
-  let(:grid) { Grid.new(rows: 2, columns: 2) }
+  let(:grid) { Grid.new(rows: 2, columns: 2, phases: 20, phase_duration: 1) }
   let(:live_tag) { tag.span(class: 'cell') }
   let(:dead_tag) { tag.span }
   let(:cells_html) { [live_tag, dead_tag, live_tag, live_tag].join }
   let(:phase) { 17 }
 
   before do
-    grid.instance_variable_set '@phase', phase
-    grid.cell_lives = [[true, false], [true, true]]
+    grid.send(:phase=, phase)
+    grid.send(:cell_lives=, [[true, false], [true, true]])
     render_grid
   end
 

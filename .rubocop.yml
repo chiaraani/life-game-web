@@ -21,3 +21,6 @@ Layout/ArgumentAlignment:
 
 Lint/UselessAssignment:
   Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false

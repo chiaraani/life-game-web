@@ -45,8 +45,8 @@ RSpec.describe GridData, type: :model do
     end
   end
 
-  describe '#to_grid' do
-    subject(:grid) { grid_data.to_grid }
+  describe '#transform_values' do
+    subject(:transform_values) { grid_data.transform_values }
 
     let(:grid_data) do
       described_class.new(
@@ -57,7 +57,7 @@ RSpec.describe GridData, type: :model do
       )
     end
 
-    let(:grid_attributes) do
+    let(:expected_output) do
       {
         'rows' => 1,
         'columns' => 2,
@@ -66,10 +66,8 @@ RSpec.describe GridData, type: :model do
       }
     end
 
-    it('returns a Grid') { is_expected.to be_a Grid }
-
-    it 'transforms values and transfers them to grid' do
-      expect(grid.instance_values).to include grid_attributes
+    it 'returns transformed values' do
+      expect(grid_data.transform_values).to eq expected_output
     end
   end
 end

@@ -5,10 +5,12 @@ class PlayJob < ApplicationJob
   queue_as :default
 
   def perform(game_id, grid_attributes)
-    @grid = GridData.new(grid_attributes).to_grid
+    @grid = Grid.new grid_attributes
 
     @grid.play { broadcast_to(game_id) }
   end
+
+  private
 
   def broadcast_to(game_id)
     Turbo::StreamsChannel.broadcast_update_to(

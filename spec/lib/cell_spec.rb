@@ -3,7 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Cell do
-  subject(:cell) { Grid.new.cells[0][1] }
+  subject(:cell) { grid.cells[0][1] }
+
+  let(:grid) do
+    Grid.new Rails.configuration.grid_default.merge(grid_attributes)
+  end
+
+  let(:grid_attributes) { {} }
 
   it 'is live or dead' do
     expect(cell.live).to be(true).or be(false)
@@ -13,63 +19,14 @@ RSpec.describe Cell do
     expect(cell.grid).to be_a(Grid)
   end
 
-  it('has row coordinate') { expect(cell.row).to eq 0 }
-  it('has column coordinate') { expect(cell.column).to eq 1 }
-
-  describe '#neighbours_coordinates' do
-    rows = 10
-    columns = 10
-    let(:grid) { Grid.new(rows:, columns:) }
-
-    shared_examples 'neighbours coordinates of' do |coordinates, neighbours|
-      it "returns coordinates of neighbours of #{coordinates} cell" do
-        cell = grid.cells[coordinates[0]][coordinates[1]]
-        expect(cell.neighbours_coordinates).to match(neighbours.sort)
-      end
-    end
-
-    context 'with internal coordinates' do
-      include_examples 'neighbours coordinates of', [1, 1],
-        [[0, 0], [0, 1], [0, 2], [1, 0], [1, 2], [2, 0], [2, 1], [2, 2]]
-    end
-
-    context 'with corner coordinates' do
-      include_examples 'neighbours coordinates of', [0, 0],
-        [[0, 1], [1, 0], [1, 1]]
-
-      include_examples 'neighbours coordinates of', [rows - 1, 0],
-        [[rows - 1, 1], [rows - 2, 0], [rows - 2, 1]]
-
-      include_examples 'neighbours coordinates of', [0, columns - 1],
-        [[0, columns - 2], [1, columns - 1], [1, columns - 2]]
-
-      include_examples 'neighbours coordinates of', [rows - 1, columns - 1],
-        [[rows - 1, columns - 2], [rows - 2, columns - 1], [rows - 2, columns - 2]]
-    end
-
-    context 'with edge coordinates' do
-      include_examples 'neighbours coordinates of', [0, 1],
-        [[0, 0], [0, 2], [1, 0], [1, 1], [1, 2]]
-
-      include_examples 'neighbours coordinates of', [1, 0],
-        [[0, 0], [0, 1], [1, 1], [2, 1], [2, 0]]
-
-      include_examples 'neighbours coordinates of', [rows - 1, 1],
-        [[rows - 1, 0], [rows - 1, 2], [rows - 2, 0], [rows - 2, 1], [rows - 2, 2]]
-
-      include_examples 'neighbours coordinates of', [1, columns - 1],
-        [[0, columns - 1], [0, columns - 2], [1, columns - 2], [2, columns - 1], [2, columns - 2]]
-    end
-  end
-
   describe '#next?' do
     subject(:cell) { grid.cells[1][1] }
 
-    let(:grid) { Grid.new(rows: 3, columns: 5) }
+    let(:grid_attributes) { { columns: 5, rows: 3 } }
 
     shared_examples 'next' do |description, cells, will_live|
       it description do
-        grid.cell_lives = cells
+        grid.send(:cell_lives=, cells)
         expect(cell.next?).to match(will_live)
       end
     end

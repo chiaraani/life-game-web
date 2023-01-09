@@ -11,7 +11,7 @@ class GridsController < ApplicationController
     @grid_data = GridData.new(**grid_params)
 
     if @grid_data.valid?
-      PlayJob.perform_later(params['game_id'], grid_params)
+      PlayJob.perform_later(params['game_id'], @grid_data.transform_values)
     else
       render :new, status: :unprocessable_entity
     end

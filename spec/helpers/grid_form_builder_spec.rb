@@ -9,11 +9,11 @@ RSpec.describe GridFormBuilder, type: :helper do
     )
   end
 
-  describe '#number_field' do
+  describe '#number_field_validations' do
     def is_expected_to_have_attribute(name, attribute, value = nil)
       builder do |form|
         selector = value ? "input[#{attribute}=#{value}]" : "input[#{attribute}]"
-        expect(form.number_field(name)).to have_css(selector)
+        expect(form.number_field_with_validations(name)).to have_css(selector)
       end
     end
 

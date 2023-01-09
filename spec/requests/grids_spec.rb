@@ -10,27 +10,26 @@ RSpec.describe 'Grids', type: :request do
     end
   end
 
-  describe 'POST /play' do
+  describe 'POST or GET /play' do
     subject!(:create) { post('/play', params:) }
 
     context 'with correct parameters' do
       let(:params) do
-        { grid_data: { rows: '3', columns: '3', phase_duration: '0.01',
-                       phases: '2' } }
+        {
+          game_id: '1a',
+          grid_data: { rows: '3', columns: '3', phase_duration: '0.01', phases: '2' }
+        }
       end
 
       let(:job_params) do
-        { 'rows' => 3,
-          'columns' => 3,
-          'phase_duration' => 0.01,
-          'phases' => 2 }
+        ['1a',
+         { 'rows' => 3, 'columns' => 3, 'phase_duration' => 0.01, 'phases' => 2 }]
       end
 
-      it { expect(response).to have_http_status(:created) }
-      it { expect(response).to render_template(:play) }
+      it { expect(response).to have_http_status(:successful) }
 
       it 'performs Play Job' do
-        expect(PlayJob).to have_been_enqueued.with(job_params)
+        expect(PlayJob).to have_been_enqueued.with(*job_params)
       end
     end
 

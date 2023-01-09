@@ -5,20 +5,12 @@ class Cell
   attr_accessor :live
   attr_reader :grid, :row, :column
 
-  def initialize(grid, coordinates, live = [true, false].sample)
-    @live = live
+  def initialize(grid, coordinates)
+    @live = [true, false].sample
     @grid = grid
     @row, @column = coordinates
 
     neighbours_coordinates
-  end
-
-  def neighbours_coordinates
-    @neighbours_coordinates ||=
-      possible_neighbours.select do |neighbour|
-        (0..grid.rows - 1).include?(neighbour[0]) &&
-          (0..grid.columns - 1).include?(neighbour[1])
-      end - [[row, column]]
   end
 
   def next?
@@ -32,6 +24,16 @@ class Cell
   end
 
   private
+
+  def neighbours_coordinates
+    @neighbours_coordinates ||= possible_neighbours.select do |neighbour|
+      on_grid?(*neighbour) && neighbour != [row, column]
+    end
+  end
+
+  def on_grid?(neighbour_row, neighbour_column)
+    (0..grid.rows - 1).include?(neighbour_row) && (0..grid.columns - 1).include?(neighbour_column)
+  end
 
   def possible_neighbours
     (row - 1..row + 1).map do |neighbour_row|

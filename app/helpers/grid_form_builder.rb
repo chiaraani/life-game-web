@@ -2,8 +2,8 @@
 
 # Build HTML validations from Active Model Validations for Grid
 class GridFormBuilder < ActionView::Helpers::FormBuilder
-  def number_field(attribute, **options)
-    super attribute,
+  def number_field_with_validations(attribute, **options)
+    number_field attribute,
       required: true,
       step: step_of(attribute),
       min: @object.class.range_of(attribute).min,

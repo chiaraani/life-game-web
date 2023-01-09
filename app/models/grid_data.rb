@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Validate grid data
+# Grid data manager
 class GridData
   include ActiveModel::Model
   include ActiveModel::Attributes
@@ -25,15 +25,11 @@ class GridData
     numericality_validator(attribute).options[:in]
   end
 
-  def to_grid
-    Grid.new(**transform_values)
-  end
-
-  private
-
   def transform_values
     attribute_names.index_with { |attribute| transform_value(attribute) }
   end
+
+  private
 
   def transform_value(attribute)
     transform_method_name = "to_#{self.class.type_of(attribute)[0]}"

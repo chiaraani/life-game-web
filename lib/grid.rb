@@ -4,10 +4,11 @@ require_relative 'cell'
 
 # Grid of cells that die, live and reproduce
 class Grid
-  attr_reader :cells, :phase, :rows, :columns, :phases
+  attr_reader :cells, :phase, :rows, :columns, :phases, :phase_duration
+  private attr_writer :cells, :phase
 
-  def initialize(args)
-    args.each_pair do |key, value|
+  def initialize(attributes)
+    attributes.each_pair do |key, value|
       instance_variable_set("@#{key}", value)
     end
     generate_cells
@@ -20,9 +21,9 @@ class Grid
   def play
     loop do
       yield
-      break if phase >= @phases
+      break if phase >= phases
 
-      sleep @phase_duration
+      sleep phase_duration
       next_phase
     end
   end
@@ -42,13 +43,13 @@ class Grid
   def cell_lives=(next_lives)
     next_lives.each_with_index do |row, cell_row|
       row.each_with_index do |life, cell_column|
-        @cells[cell_row][cell_column].live = life
+        cells[cell_row][cell_column].live = life
       end
     end
   end
 
   def next_phase
     self.cell_lives = cells.map { |row| row.map(&:next?) }
-    @phase += 1
+    self.phase = phase + 1
   end
 end
