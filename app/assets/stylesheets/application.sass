@@ -1,0 +1,114 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+$small-breakpoint: 425px
+
+body 
+  font-family: sans-serif
+main
+  max-width: 800px
+  margin: 0 auto
+h1
+  @extend .card
+  background-color: #000064;
+  color: #e9e9ff;
+
+.card
+  padding: 0.5em 0.8em
+  margin-bottom: 1em
+  border-radius: 1em 0
+  box-shadow: 0 0 0.3em #0005
+
+
+// Form //
+form 
+  @extend .card
+  background-color: aliceblue
+
+.field
+  margin-bottom: 1em
+  border-bottom: 1px solid #00f1
+
+input, .button 
+  font-size: inherit
+  border-radius: 1em
+  margin: 0.2em
+
+input[type=number] 
+  display: block
+  padding: 0.2em 0.5em
+  border-color: grey
+  border-style: solid
+  max-width: 100%
+  align-self: stretch
+
+@mixin button-background($color)
+  background-image: linear-gradient(0deg, darken($color, 20%), $color)
+  &:hover 
+    background-image: linear-gradient(0deg, $color, lighten($color, 10%))
+
+.button 
+  cursor: pointer
+  color: white
+  border-style: none
+  padding: 0.5em 1em
+  text-decoration: none
+  align-items: center
+  width: fit-content
+  @include button-background(#4e7aff)
+
+input[type=submit], button
+  @extend .button
+
+// Errors //
+
+.error 
+  background-color: #f50c0c
+  color: white
+  font-weight: bold
+  padding: 0.3em
+  border-radius: 0.7em 0
+
+.field_with_errors 
+  margin: 0
+  display: flex
+  align-items: stretch
+  flex-direction: column
+
+  & input[type=text] 
+    border-color: #f50c0c
+
+// Population of cells //
+.cells
+  --columns: 1;
+  --rows: 1;
+
+  background-color: aliceblue;
+  border: #c3e3ff 2px solid;
+
+  display: inline-grid;
+  --cell-size: calc( calc( 100vmin - 100px ) / max(var(--rows), var(--columns)) );
+  grid-template-rows: repeat(var(--rows), var(--cell-size));
+  grid-template-columns: repeat(var(--columns), var(--cell-size));
+
+  & > .cell
+    background-color: #d64889;
+    border-radius: 100%;
+
+p.finished
+  color: green;
+  & > a
+    @extend .button
